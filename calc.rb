@@ -9,12 +9,11 @@ set height: $ry; set width: $rx;
 class Kalkulator
   def initialize
     @digits = '0'
-    @message = 'subteal subteal subteal subteal subteal subteal subteal'
+    @message = 'subteal subteal subteal subteal'
     @buttons = []
     @shift = 0
     @number = 0
     @memory = 0
-    @dec = false
     @sign = ''
 
     @screen = Rectangle.new(
@@ -57,7 +56,7 @@ class Kalkulator
       )
     end
 
-    symbol = ['7','8','9','x','4','5','6','-','1','2','3','+','=','0',',',':']
+    symbol = ['7','8','9','C','4','5','6','+','1','2','3','-','0','x',':','=']
 
     for i in 0..3
       for j in 0..3
@@ -94,12 +93,10 @@ class Kalkulator
             elsif @digits.length<11
               @digits=@digits+symbol
             end
-            @number=Float(@digits)
-          elsif symbol==','
-            @dec=true
+            @number=Integer(@digits)
           else
-            @dec=false
             if(symbol=='=')
+              buff = @number
               case @sign
               when '+'
                 @number=@number+@memory
@@ -110,10 +107,13 @@ class Kalkulator
               when ':'
                 @number=@memory/@number
               end
-              @digits=String(@nymber)
+              @memory=buff
+              @digits=String(@number)
             else
-              @sign=symbol
-              @memory=@number
+              if symbol!='C'
+                @sign=symbol
+                @memory=@number
+              end
               @number = 0
               @digits = '0'
             end
@@ -141,7 +141,7 @@ class Button
       color: 'black',
       z: 10
     )
-    if @symbol=='='
+    if @symbol=='=' or @symbol=='C'
       @sq.color='red'
     end
     @tag = Text.new(
