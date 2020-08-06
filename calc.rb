@@ -15,6 +15,8 @@ class Kalkulator
     @number = 0
     @memory = 0
     @sign = ''
+    @prev = ''
+    @fw = 35
 
     @screen = Rectangle.new(
       x: $bor, y: $bor,
@@ -25,7 +27,7 @@ class Kalkulator
 
     @screentext = Text.new(
       @digits,
-      x: 4*$bor, y: 2*$bor,
+      x: $rx-4*$bor-@fw, y: 2*$bor,
       font: 'data-latin.ttf',
       size: 72,
       color: 'black',
@@ -71,6 +73,8 @@ class Kalkulator
   def update
     @screentext.text=@digits
     @subtext.text=@message
+    dl = @digits.length
+    @screentext.x = $rx-4*$bor-dl*@fw
     if @shift>$rx*4
       @shift=0
     else
@@ -87,7 +91,6 @@ class Kalkulator
           symbol=buff
           f=true if Integer(symbol) rescue f=false
           if f
-            @message=@message+symbol
             if @number==0
               @digits=symbol
             elsif @digits.length<11
@@ -96,18 +99,21 @@ class Kalkulator
             @number=Integer(@digits)
           else
             if(symbol=='=')
-              buff = @number
+              if @sign==@prev
+                buff = @number
+                @number=@memory
+                @memory = buff
+              end
               case @sign
               when '+'
                 @number=@number+@memory
               when '-'
-                @number=@memory-@number
+                @number=@number-@memory
               when 'x'
                 @number=@memory*@number
               when ':'
-                @number=@memory/@number
+                @number=@number/@memory
               end
-              @memory=buff
               @digits=String(@number)
             else
               if symbol!='C'
@@ -117,6 +123,7 @@ class Kalkulator
               @number = 0
               @digits = '0'
             end
+            @prev=symbol
           end
           break;
         end
