@@ -1,5 +1,6 @@
 ### FDC 2020 ###
 require "ruby2d"
+$t=Time.new
 
 $rx = 400; $ry = 600; $bor = 5; $mbr=0;
 set title: "Sophie Calculator"
@@ -17,6 +18,8 @@ class Kalkulator
     @sign = ''
     @prev = ''
     @fw = 35
+    @mind = Depth.new
+    @message = @mind.influence
 
     @screen = Rectangle.new(
       x: $bor, y: $bor,
@@ -74,8 +77,9 @@ class Kalkulator
     @screentext.text=@digits
     @subtext.text=@message
     dl = @digits.length
+    ml = @message.length
     @screentext.x = $rx-4*$bor-dl*@fw
-    if @shift>$rx*4
+    if @shift>$rx+21*(ml+1)
       @shift=0
     else
       @shift+=2
@@ -125,6 +129,7 @@ class Kalkulator
             end
             @prev=symbol
           end
+          @message=@mind.influence(self,symbol,a)
           break;
         end
       end
@@ -177,6 +182,93 @@ class Button
   end
 end
 
+class Depth
+  def influence(sk='init',symbol=NIL,action=NIL)
+    if sk == 'init'
+      self.greetings
+    else
+      case symbol
+      when '0'
+        msg = 'Emptiness ._.'
+      when '1'
+        msg = 'One and only'
+      when '2'
+        msg = 'A pair'
+      when '3'
+        msg = 'Start, middle and finish'
+      when '4'
+        msg = 'Stable like a table'
+      when '5'
+        msg = 'High five! :D'
+      when '6'
+        msg = '666'
+      when '7'
+        msg = '777'
+      when '8'
+        msg = '888'
+      when '9'
+        msg = '999'
+      when '+'
+        msg = 'Keep it possitive!'
+      when '-'
+        msg = "Don't get too negative..."
+      when 'x'
+        msg = 'How many times?'
+      when ':'
+        msg = '[The division]'
+      when 'C'
+        msg = 'ALL CLEAR!! >_<'
+      when '='
+        msg = 'Your results please!'
+      end
+      #msg=msg.sample
+      return msg
+    end
+  end
+  def greetings
+    n=rand(4)
+    case n
+    when 0
+      msg = 'Hello!'
+    when 1
+      msg = 'Hi!'
+    when 2
+      msg = 'Greetings!'
+    when 3
+      case $t.hour
+      when  1..11
+        msg = 'Good morning!'
+      when 11..18
+        msg = 'Good afternoon!'
+      when 18..23
+        msg = 'Good evening!'
+      end
+    end
+    msg=msg+self.emoticon
+    return msg
+  end
+  def emoticon
+    n=rand(8)
+    case n
+    when 0
+      msg = ' :)'
+    when 1
+      msg = ' ;)'
+    when 2
+      msg = ' C:'
+    when 3
+      msg = ' :D'
+    when 4
+      msg = ' x)'
+    when 5
+      msg = ' :3'
+    when 6
+      msg = ' ^^'
+    when 7
+      msg = ' uwu'
+    end
+  end
+end
 
 kalk=Kalkulator.new
 zegar = 0
