@@ -189,39 +189,44 @@ class Depth
     else
       case symbol
       when '0'
-        msg = 'Emptiness ._.'
+        msg = [['Emptiness',1],['Null',1],['Void',1],['Zero',0]]
       when '1'
-        msg = 'One and only'
+        msg = [['First!!',0],['Unity',-1],['The One',-1],['The lonely number',1]]
       when '2'
-        msg = 'A pair'
+        msg = [['A pair',0],['Double trouble!',4],
+        ['The Duality',-1],['A couple',0]]
       when '3'
-        msg = 'Start, middle and finish'
+        msg = [['Start, middle and finish',0],['Triple!!',0],['3dom!!!!',0],
+        ['Three is a charm',-1],['The power of triforce',4]]
       when '4'
-        msg = 'Stable like a table'
+        msg = [['Stable like a table',0],['four4ever!',0]]
       when '5'
-        msg = 'High five! :D'
+        msg = [['High five!',0],['The quintessence!',2]]
       when '6'
-        msg = '666'
+        msg = [['Half a dozen, please!',0],['666',4]]
       when '7'
-        msg = '777'
+        msg = [['~777~ Lucky strike!',0],['Oh good Heavens!',3]]
       when '8'
-        msg = '888'
+        msg = [['Oi, m8!',0],['K8 8 some b8',3]]
       when '9'
-        msg = '999'
+        msg = [['NEIN!',3],['999',3]]
       when '+'
-        msg = 'Keep it possitive!'
+        msg = [['Keep it possitive!',0],["Don't get too greedy",2],
+        ["Let's add something!",0],['More? MOAR!!',3]]
       when '-'
-        msg = "Don't get too negative..."
+        msg = [["Don't get too negative...",2],['The number will go down!',1]]
       when 'x'
-        msg = 'How many times?'
+        msg = [['How many times?',0],['More x More!',0]]
       when ':'
-        msg = '[The division]'
+        msg = [['[The division]',-1],['Into the pieces!',4]]
       when 'C'
-        msg = 'ALL CLEAR!! >_<'
+        msg = [['ALL CLEAR!!',3]]
       when '='
-        msg = 'Your results please!'
+        msg = [['Your results please!',0]]
       end
-      #msg=msg.sample
+      msg=msg.sample
+      #mood=msg[1]
+      msg=msg[0]+self.emoticon(msg[1])
       return msg
     end
   end
@@ -247,26 +252,23 @@ class Depth
     msg=msg+self.emoticon
     return msg
   end
-  def emoticon
-    n=rand(8)
-    case n
-    when 0
-      msg = ' :)'
-    when 1
-      msg = ' ;)'
-    when 2
-      msg = ' C:'
-    when 3
-      msg = ' :D'
+  def emoticon(mood=0)
+    case mood
+    when 0 #friendly/joyful
+      msg = [':)',';)','C:',':D','x)',':3','^^','uwu']
+    when 1 #sad/depressed
+      msg = [':(',":'(",':C',':/',':|','.-.','._.','unu']
+    when 2 #surprised
+      msg = [':o','o.0','o_0','D:']
+    when 3 #annoyed
+      msg = ['>_<','>.<','<_<','-_-','-_-"',':P','^^"','uwu"']
     when 4
-      msg = ' x)'
-    when 5
-      msg = ' :3'
-    when 6
-      msg = ' ^^'
-    when 7
-      msg = ' uwu'
+      msg = ['>:)',':>','>:D','>:3']
+    else
+      msg = ['','']
     end
+    msg=msg.sample
+    msg= ' ' + msg
   end
 end
 
